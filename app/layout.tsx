@@ -19,6 +19,8 @@ export default function RootLayout({
       <body className={oswald.className}>
         <Theme>
           <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <Analytics />
+          <SpeedInsights />
         </Theme>
       </body>
     </html>
