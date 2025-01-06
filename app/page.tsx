@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import Image from 'next/image'
 import { Footer, Header } from '@/components'
 import { CharacterProps } from '@/types/CharacterProps'
@@ -9,24 +9,27 @@ import { CharacterCard, CharacterName, CharacterOtherInfo, CharacterPhoto, HomeB
 export default function Home() {
   const [characters, setCharacters] = useState<CharacterProps[]>([])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/characters')
-        const data = await response.json()
-        setCharacters(data.results)
-      } catch (error) {
-        console.error('Error fetching characters:', error)
-      }
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/characters')
+      const data = await response.json()
+      setCharacters(data.results)
+    } catch (error) {
+      console.error('Error fetching characters:', error)
     }
+  }
+
+  useEffect(() => {
     fetchData()
   }, [])
+
+  const memoCharacters = useMemo(() => characters, [characters])
 
   return (
     <>
       <Header />
       <HomeBox>
-        {characters.map((el) => (
+        {memoCharacters.map((el) => (
           <CharacterCard key={el.id}>
             <CharacterPhoto>
               <Image 
